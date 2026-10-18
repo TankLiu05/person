@@ -1,0 +1,92 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="python-multipart" />
+          <option value="langchain-openai" />
+          <option value="python-dotenv" />
+          <option value="openpyxl" />
+          <option value="amqp" />
+          <option value="asgiref" />
+          <option value="async-timeout" />
+          <option value="backports.zoneinfo" />
+          <option value="billiard" />
+          <option value="cached-property" />
+          <option value="celery" />
+          <option value="click" />
+          <option value="click-didyoumean" />
+          <option value="click-plugins" />
+          <option value="click-repl" />
+          <option value="clickhouse-driver" />
+          <option value="clickhouse-pool" />
+          <option value="cryptography" />
+          <option value="deepdiff" />
+          <option value="defusedxml" />
+          <option value="diff-match-patch" />
+          <option value="Django" />
+          <option value="django-clickhouse-backend" />
+          <option value="django-filter" />
+          <option value="django-import-export" />
+          <option value="django-redis" />
+          <option value="djangorestframework" />
+          <option value="et-xmlfile" />
+          <option value="filelock" />
+          <option value="Flask" />
+          <option value="gmssl" />
+          <option value="gunicorn" />
+          <option value="hyperscan" />
+          <option value="importlib-metadata" />
+          <option value="IPy" />
+          <option value="itsdangerous" />
+          <option value="Jinja2" />
+          <option value="kombu" />
+          <option value="M2Crypto" />
+          <option value="MarkupPy" />
+          <option value="MarkupSafe" />
+          <option value="netaddr" />
+          <option value="netns" />
+          <option value="odfpy" />
+          <option value="ordered-set" />
+          <option value="Pillow" />
+          <option value="prompt-toolkit" />
+          <option value="psutil" />
+          <option value="pycryptodomex" />
+          <option value="pyinotify" />
+          <option value="PyMySQL" />
+          <option value="pytz" />
+          <option value="PyYAML" />
+          <option value="redis" />
+          <option value="sqlparse" />
+          <option value="supervisor" />
+          <option value="tablib" />
+          <option value="typing_extensions" />
+          <option value="tzlocal" />
+          <option value="vine" />
+          <option value="wcwidth" />
+          <option value="Werkzeug" />
+          <option value="xlrd" />
+          <option value="xlwt" />
+          <option value="zipp" />
+          <option value="requests" />
+          <option value="pyzmq" />
+          <option value="geoip2" />
+          <option value="channels" />
+          <option value="channels-redis" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyStubPackagesAdvertiser" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="scipy" />
+          <option value="djangorestframework" />
+          <option value="celery" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="SqlNoDataSourceInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+  </profile>
+</component>
