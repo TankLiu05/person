@@ -115,7 +115,7 @@
   const navMenu = document.getElementById("nav-menu");
   const navMain = document.querySelector("main");
   const navFooter = document.querySelector("footer");
-  const desktopNav = window.matchMedia("(min-width: 801px)");
+  const desktopNav = window.matchMedia("(min-width: 901px)");
   let menuOpen = false;
 
   const setMenu = (open, restoreFocus = true) => {
