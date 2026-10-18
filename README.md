@@ -1,5 +1,7 @@
 # 刘子鋆｜系统运维工程师个人主页
 
+线上地址：https://tankliu05.github.io/person/
+
 纯 HTML、CSS 和 JavaScript 构建的静态个人网站。发布目录为 `dist/`。
 
 ## GitHub Pages 自动部署

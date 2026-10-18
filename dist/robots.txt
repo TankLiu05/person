@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tankliu05.github.io/person/sitemap.xml

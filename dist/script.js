@@ -214,11 +214,16 @@
   const viewerImage = document.getElementById("viewer-image");
   const viewerCaption = document.getElementById("viewer-caption");
   const viewerClose = viewer?.querySelector(".viewer-close");
+  const viewerPrevious = viewer?.querySelector(".viewer-prev");
+  const viewerNext = viewer?.querySelector(".viewer-next");
   const previewImages = [...document.querySelectorAll(".copyright-certificate img, .award-media img")];
   let viewerTrigger = null;
+  let viewerIndex = -1;
+  let viewerSwitchTimer = 0;
 
   const closeViewer = () => {
     if (!viewer?.classList.contains("open")) return;
+    window.clearTimeout(viewerSwitchTimer);
     viewer.classList.remove("open");
     viewer.setAttribute("aria-hidden", "true");
     document.body.classList.remove("viewer-open");
@@ -228,12 +233,25 @@
     }, reduced ? 0 : 320);
   };
 
+  const showViewerImage = (index) => {
+    if (!viewer || !viewerImage || !viewerCaption) return;
+    viewerIndex = (index + previewImages.length) % previewImages.length;
+    const image = previewImages[viewerIndex];
+    if (!image) return;
+    window.clearTimeout(viewerSwitchTimer);
+    viewerImage.classList.add("switching");
+    viewerSwitchTimer = window.setTimeout(() => {
+      viewerImage.src = image.currentSrc || image.src;
+      viewerImage.alt = image.alt;
+      viewerCaption.textContent = image.alt;
+      viewerImage.classList.remove("switching");
+    }, reduced ? 0 : 120);
+  };
+
   const openViewer = (image) => {
     if (!viewer || !viewerImage || !viewerCaption) return;
     viewerTrigger = image;
-    viewerImage.src = image.currentSrc || image.src;
-    viewerImage.alt = image.alt;
-    viewerCaption.textContent = image.alt;
+    showViewerImage(previewImages.indexOf(image));
     viewer.classList.add("open");
     viewer.setAttribute("aria-hidden", "false");
     document.body.classList.add("viewer-open");
@@ -244,6 +262,7 @@
     image.tabIndex = 0;
     image.setAttribute("role", "button");
     image.setAttribute("aria-label", `查看大图：${image.alt}`);
+    image.setAttribute("aria-haspopup", "dialog");
     image.addEventListener("click", () => {
       if (image.closest("#copyright-viewport") && Date.now() - lastCarouselDrag < 400) return;
       openViewer(image);
@@ -255,9 +274,23 @@
     });
   });
   viewerClose?.addEventListener("click", closeViewer);
+  viewerPrevious?.addEventListener("click", () => showViewerImage(viewerIndex - 1));
+  viewerNext?.addEventListener("click", () => showViewerImage(viewerIndex + 1));
   viewer?.querySelector("[data-viewer-close]")?.addEventListener("click", closeViewer);
   document.addEventListener("keydown", (event) => {
+    if (!viewer?.classList.contains("open")) return;
     if (event.key === "Escape") closeViewer();
+    if (event.key === "ArrowLeft") showViewerImage(viewerIndex - 1);
+    if (event.key === "ArrowRight") showViewerImage(viewerIndex + 1);
+    if (event.key === "Tab") {
+      const controls = [viewerClose, viewerPrevious, viewerNext].filter(Boolean);
+      const current = controls.indexOf(document.activeElement);
+      const next = event.shiftKey
+        ? (current - 1 + controls.length) % controls.length
+        : (current + 1) % controls.length;
+      event.preventDefault();
+      controls[next].focus();
+    }
   });
 
   const copyButton = document.getElementById("copy-email");
