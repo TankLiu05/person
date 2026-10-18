@@ -86,9 +86,38 @@
           <a href="#copyrights">软著</a>
           <a href="#honors">荣誉</a>
         </nav>
-        <a class="nav-contact" href="#contact">联系<span aria-hidden="true">↗</span></a>
+        <div class="nav-actions">
+          <a class="nav-contact" href="#contact">联系<span aria-hidden="true">↗</span></a>
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="nav-menu"
+            aria-label="打开导航菜单"
+          >
+            <span class="nav-toggle-box" aria-hidden="true"><i></i><i></i></span>
+          </button>
+        </div>
       </div>
     </header>
+
+    <nav class="nav-menu" id="nav-menu" aria-label="站点导航" aria-hidden="true">
+      <div class="nav-menu-inner content">
+        <p class="nav-menu-label">导航 / MENU</p>
+        <div class="nav-menu-links">
+          <a href="#capability"><span class="menu-index">01</span><span class="menu-label">能力</span><span class="menu-en">CAPABILITY</span></a>
+          <a href="#method"><span class="menu-index">02</span><span class="menu-label">方法</span><span class="menu-en">METHOD</span></a>
+          <a href="#practice"><span class="menu-index">03</span><span class="menu-label">实践</span><span class="menu-en">PRACTICE</span></a>
+          <a href="#experience"><span class="menu-index">04</span><span class="menu-label">经历</span><span class="menu-en">EXPERIENCE</span></a>
+          <a href="#copyrights"><span class="menu-index">05</span><span class="menu-label">软著</span><span class="menu-en">COPYRIGHTS</span></a>
+          <a href="#honors"><span class="menu-index">06</span><span class="menu-label">荣誉</span><span class="menu-en">HONORS</span></a>
+        </div>
+        <div class="nav-menu-foot">
+          <a class="button button-primary" href="#contact">联系我<span aria-hidden="true">→</span></a>
+          <a class="nav-menu-mail" href="mailto:18330177876@163.com">18330177876@163.com</a>
+        </div>
+      </div>
+    </nav>
 
     <main id="main">
       <!-- 首屏 -->

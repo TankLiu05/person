@@ -61,7 +61,11 @@
   window.addEventListener("scroll", updateProgress, { passive: true });
   updateProgress();
 
-  const navigationLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+  const navigationLinks = [
+    ...document.querySelectorAll(
+      '.nav-links a[href^="#"], .nav-menu-links a[href^="#"], .nav-contact[href^="#"]',
+    ),
+  ];
   const navigationTargets = navigationLinks
     .map((link) => ({ link, section: document.querySelector(link.getAttribute("href")) }))
     .filter(({ section }) => section);
@@ -84,7 +88,57 @@
     navigationTargets.forEach(({ section }) => navObserver.observe(section));
   }
 
-  const hero = document.querySelector(".hero");
+  const navToggle = document.querySelector(".nav-toggle");
+  const navMenu = document.getElementById("nav-menu");
+  const navMain = document.querySelector("main");
+  const navFooter = document.querySelector("footer");
+  const desktopNav = window.matchMedia("(min-width: 801px)");
+  let menuOpen = false;
+
+  const setMenu = (open, restoreFocus = true) => {
+    if (!navToggle || !navMenu) return;
+    menuOpen = open;
+    navToggle.setAttribute("aria-expanded", String(open));
+    navToggle.setAttribute("aria-label", open ? "关闭导航菜单" : "打开导航菜单");
+    navMenu.classList.toggle("open", open);
+    navMenu.setAttribute("aria-hidden", String(!open));
+    document.body.classList.toggle("menu-open", open);
+    if (navMain) navMain.inert = open;
+    if (navFooter) navFooter.inert = open;
+    if (open) {
+      window.setTimeout(() => {
+        if (menuOpen) navMenu.querySelector("a")?.focus({ preventScroll: true });
+      }, 80);
+    } else if (restoreFocus) {
+      navToggle.focus({ preventScroll: true });
+    }
+  };
+
+  navToggle?.addEventListener("click", () => setMenu(!menuOpen));
+
+  navMenu?.addEventListener("click", (event) => {
+    if (event.target.closest('a[href^="#"]')) {
+      setMenu(false, false);
+      return;
+    }
+    if (!event.target.closest(".nav-menu-inner")) setMenu(false);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!menuOpen) return;
+    if (event.target.closest("#nav-menu") || event.target.closest(".nav-toggle")) return;
+    setMenu(false, false);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && menuOpen) setMenu(false);
+  });
+
+  desktopNav.addEventListener("change", (event) => {
+    if (event.matches && menuOpen) setMenu(false, false);
+  });
+
+    const hero = document.querySelector(".hero");
   const aura = document.querySelector(".hero-aura");
   if (!reduced && hero && aura && window.matchMedia("(pointer: fine)").matches) {
     let pointerFrame = 0;
