@@ -1589,12 +1589,9 @@ body.menu-open .global-nav {
 }
 
 .copyrights-head {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
-  gap: clamp(32px, 4vw, 64px);
-  align-items: end;
-  max-width: none;
-  margin-bottom: clamp(28px, 3.5vw, 44px);
+  display: block;
+  max-width: 980px;
+  margin-bottom: clamp(22px, 3vw, 34px);
 }
 
 .copyrights-head h2 {
@@ -1609,6 +1606,56 @@ body.menu-open .global-nav {
   color: var(--muted);
   font-size: 14.5px;
   line-height: 1.8;
+}
+
+.copyright-marquee {
+  position: relative;
+  overflow: hidden;
+  padding-block: 8px 14px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: copyright-marquee 40s linear infinite;
+  will-change: transform;
+}
+
+.copyright-marquee:hover .marquee-track,
+.copyright-marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-item {
+  flex: 0 0 auto;
+  width: clamp(220px, 23vw, 340px);
+  margin: 0 10px;
+  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 26px 54px -44px rgba(16, 17, 20, 0.45);
+}
+
+.marquee-item img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 10px;
+  cursor: zoom-in;
+}
+
+@keyframes copyright-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .copyright-carousel {
@@ -2675,5 +2722,24 @@ body.viewer-open {
 
   .viewer-content {
     padding-bottom: 66px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copyright-marquee {
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .marquee-track {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+    animation: none;
+  }
+
+  .marquee-item[aria-hidden="true"] {
+    display: none;
   }
 }

@@ -179,105 +179,14 @@
     });
   }
 
-  let lastCarouselDrag = 0;
-
-  const copyrightViewport = document.getElementById("copyright-viewport");
-  if (copyrightViewport) {
-    const slides = [...copyrightViewport.querySelectorAll(".copyright-slide")];
-    const dots = [...document.querySelectorAll("[data-copyright-slide]")];
-    const current = document.getElementById("copyright-current");
-    const previous = document.getElementById("copyright-prev");
-    const next = document.getElementById("copyright-next");
-    let activeIndex = 0;
-    let scrollFrame = 0;
-    let dragging = false;
-    let dragMoved = false;
-    let dragStartX = 0;
-    let dragStartScroll = 0;
-
-    const updateCarouselState = (index) => {
-      activeIndex = Math.max(0, Math.min(slides.length - 1, index));
-      current.textContent = String(activeIndex + 1).padStart(2, "0");
-      dots.forEach((dot, dotIndex) => {
-        const selected = dotIndex === activeIndex;
-        dot.classList.toggle("active", selected);
-        if (selected) dot.setAttribute("aria-current", "true");
-        else dot.removeAttribute("aria-current");
-      });
-    };
-
-    const goToSlide = (index, smooth = true) => {
-      const wrapped = (index + slides.length) % slides.length;
-      copyrightViewport.scrollTo({
-        left: slides[wrapped].offsetLeft,
-        behavior: smooth && !reduced ? "smooth" : "auto",
-      });
-      updateCarouselState(wrapped);
-    };
-
-    previous?.addEventListener("click", () => goToSlide(activeIndex - 1));
-    next?.addEventListener("click", () => goToSlide(activeIndex + 1));
-    dots.forEach((dot, index) => dot.addEventListener("click", () => goToSlide(index)));
-
-    copyrightViewport.addEventListener("scroll", () => {
-      window.cancelAnimationFrame(scrollFrame);
-      scrollFrame = window.requestAnimationFrame(() => {
-        const index = Math.round(copyrightViewport.scrollLeft / copyrightViewport.clientWidth);
-        updateCarouselState(index);
-      });
-    }, { passive: true });
-
-    copyrightViewport.addEventListener("keydown", (event) => {
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        goToSlide(activeIndex - 1);
-      }
-      if (event.key === "ArrowRight") {
-        event.preventDefault();
-        goToSlide(activeIndex + 1);
-      }
-    });
-
-    copyrightViewport.addEventListener("pointerdown", (event) => {
-      if (event.pointerType !== "mouse") return;
-      dragging = true;
-      dragMoved = false;
-      dragStartX = event.clientX;
-      dragStartScroll = copyrightViewport.scrollLeft;
-      copyrightViewport.classList.add("dragging");
-      copyrightViewport.setPointerCapture(event.pointerId);
-    });
-
-    copyrightViewport.addEventListener("pointermove", (event) => {
-      if (!dragging) return;
-      if (Math.abs(event.clientX - dragStartX) > 6) dragMoved = true;
-      copyrightViewport.scrollLeft = dragStartScroll - (event.clientX - dragStartX);
-    });
-
-    const finishDrag = (event) => {
-      if (!dragging) return;
-      dragging = false;
-      copyrightViewport.classList.remove("dragging");
-      if (copyrightViewport.hasPointerCapture(event.pointerId)) {
-        copyrightViewport.releasePointerCapture(event.pointerId);
-      }
-      if (dragMoved) lastCarouselDrag = Date.now();
-      const index = Math.round(copyrightViewport.scrollLeft / copyrightViewport.clientWidth);
-      goToSlide(index);
-    };
-    copyrightViewport.addEventListener("pointerup", finishDrag);
-    copyrightViewport.addEventListener("pointercancel", finishDrag);
-    window.requestAnimationFrame(() => goToSlide(0, false));
-  }
-
-  // 轮播图在进入视口附近时提前加载，避免切换时出现空白
-  const carouselImages = [...document.querySelectorAll(".copyright-slide img")];
+  // 走马灯图片在进入视口附近时提前加载，避免滚动时出现空白
+  const marqueeImages = [...document.querySelectorAll(".marquee-item img")];
   const copyrightsSection = document.getElementById("copyrights");
-  if (carouselImages.length && copyrightsSection && "IntersectionObserver" in window) {
+  if (marqueeImages.length && copyrightsSection && "IntersectionObserver" in window) {
     const preload = new IntersectionObserver(
       (entries) => {
         if (!entries.some((entry) => entry.isIntersecting)) return;
-        carouselImages.forEach((image) => {
+        marqueeImages.forEach((image) => {
           image.loading = "eager";
         });
         preload.disconnect();
@@ -293,7 +202,9 @@
   const viewerClose = viewer?.querySelector(".viewer-close");
   const viewerPrevious = viewer?.querySelector(".viewer-prev");
   const viewerNext = viewer?.querySelector(".viewer-next");
-  const previewImages = [...document.querySelectorAll(".copyright-certificate img, .award-media img")];
+  const previewImages = [
+    ...document.querySelectorAll('.marquee-item:not([aria-hidden="true"]) img, .award-media img'),
+  ];
   let viewerTrigger = null;
   let viewerIndex = -1;
   let viewerSwitchTimer = 0;
@@ -320,7 +231,7 @@
     viewerSwitchTimer = window.setTimeout(() => {
       viewerImage.src = image.currentSrc || image.src;
       viewerImage.alt = image.alt;
-      viewerCaption.textContent = image.alt;
+      viewerCaption.textContent = image.dataset.viewerCaption || image.alt;
       viewerImage.classList.remove("switching");
     }, reduced ? 0 : 120);
   };
@@ -338,12 +249,9 @@
   previewImages.forEach((image) => {
     image.tabIndex = 0;
     image.setAttribute("role", "button");
-    image.setAttribute("aria-label", `查看大图：${image.alt}`);
+    image.setAttribute("aria-label", `查看大图：${image.dataset.viewerCaption || image.alt}`);
     image.setAttribute("aria-haspopup", "dialog");
-    image.addEventListener("click", () => {
-      if (image.closest("#copyright-viewport") && Date.now() - lastCarouselDrag < 400) return;
-      openViewer(image);
-    });
+    image.addEventListener("click", () => openViewer(image));
     image.addEventListener("keydown", (event) => {
       if (event.key !== "Enter" && event.key !== " ") return;
       event.preventDefault();
