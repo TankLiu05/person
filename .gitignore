@@ -2,4 +2,4 @@
 .openai/
 preview/
 *.tar.gz
-
+.idea/
