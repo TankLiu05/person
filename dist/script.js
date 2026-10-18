@@ -70,6 +70,28 @@
     .map((link) => ({ link, section: document.querySelector(link.getAttribute("href")) }))
     .filter(({ section }) => section);
 
+  const desktopNavLinks = [...document.querySelectorAll(".nav-links a")];
+  const navIndicator = document.querySelector(".nav-indicator");
+  const navPill = document.querySelector(".nav-links");
+
+  const moveNavIndicator = (link) => {
+    if (!navIndicator || !navPill) return;
+    if (!link || getComputedStyle(navPill).display === "none") {
+      navIndicator.classList.remove("visible");
+      return;
+    }
+    navIndicator.style.width = `${link.offsetWidth}px`;
+    navIndicator.style.transform = `translateX(${link.offsetLeft}px)`;
+    navIndicator.classList.add("visible");
+  };
+
+  const activeDesktopLink = () =>
+    desktopNavLinks.find((link) => link.classList.contains("active")) || null;
+
+  window.addEventListener("resize", () => moveNavIndicator(activeDesktopLink()), {
+    passive: true,
+  });
+
   if ("IntersectionObserver" in window && navigationTargets.length) {
     const visibleSections = new Map();
     const navObserver = new IntersectionObserver((entries) => {
@@ -84,6 +106,7 @@
         if (selected) link.setAttribute("aria-current", "location");
         else link.removeAttribute("aria-current");
       });
+      moveNavIndicator(activeDesktopLink());
     }, { rootMargin: "-28% 0px -58% 0px", threshold: [0, 0.1, 0.25, 0.5] });
     navigationTargets.forEach(({ section }) => navObserver.observe(section));
   }

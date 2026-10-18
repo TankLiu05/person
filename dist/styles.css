@@ -226,9 +226,28 @@ ul {
 .wordmark {
   display: flex;
   gap: 9px;
-  align-items: baseline;
+  align-items: center;
   justify-self: start;
   transition: color 0.25s var(--ease);
+}
+
+.wordmark-mark {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  color: var(--paper);
+  background: var(--ink);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  transition: background 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.wordmark:hover .wordmark-mark {
+  background: var(--accent);
+  transform: rotate(-4deg);
 }
 
 .wordmark-cn {
@@ -236,6 +255,7 @@ ul {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.02em;
+  line-height: 1;
 }
 
 .wordmark-en {
@@ -243,6 +263,7 @@ ul {
   font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.16em;
+  line-height: 1;
 }
 
 .wordmark:hover .wordmark-cn {
@@ -250,29 +271,28 @@ ul {
 }
 
 .nav-links {
+  position: relative;
   display: flex;
-  gap: 30px;
+  gap: 2px;
+  align-items: center;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.46);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .nav-links a {
   position: relative;
-  padding: 21px 0;
-  color: var(--ink-2);
-  font-size: 13px;
+  z-index: 1;
+  padding: 7px 13px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.2;
   transition: color 0.25s var(--ease);
-}
-
-.nav-links a::after {
-  position: absolute;
-  right: 0;
-  bottom: 15px;
-  left: 0;
-  height: 1.5px;
-  content: "";
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s var(--ease);
 }
 
 .nav-links a:hover {
@@ -283,8 +303,26 @@ ul {
   color: var(--accent);
 }
 
-.nav-links a.active::after {
-  transform: scaleX(1);
+.nav-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  opacity: 0;
+  transform: translateX(0);
+  transition: transform 0.38s var(--ease), width 0.38s var(--ease),
+    opacity 0.2s var(--ease);
+  pointer-events: none;
+}
+
+.nav-indicator.visible {
+  opacity: 1;
+}
+
+.global-nav.scrolled .nav-links {
+  background: rgba(255, 255, 255, 0.68);
 }
 
 .nav-contact {
@@ -2134,7 +2172,7 @@ body.viewer-open {
 
 @media (max-width: 1080px) {
   .nav-links {
-    gap: 22px;
+    gap: 2px;
   }
 
   .hero-inner {
