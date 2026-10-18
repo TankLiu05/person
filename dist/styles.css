@@ -590,6 +590,10 @@ body.menu-open .global-nav {
   color: var(--on-dark);
 }
 
+.dark-section h2 span {
+  color: var(--on-dark-muted);
+}
+
 .statement,
 .capability-section,
 .method-section,
@@ -657,6 +661,22 @@ body.menu-open .global-nav {
 .section-head h2 {
   font-size: clamp(2rem, 3.2vw, 2.95rem);
   line-height: 1.18;
+}
+
+.section-head h2 span,
+.engineering-copy h2 span,
+.statement h2 span,
+.contact-inner h2 span {
+  display: block;
+  margin-top: 0.14em;
+  color: var(--muted);
+  font-size: 0.78em;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.dark-section h2 span {
+  color: var(--on-dark-muted);
 }
 
 /* ---------- 按钮 ---------- */
@@ -774,13 +794,27 @@ body.menu-open .global-nav {
 
 .eyebrow {
   display: inline-flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 6px 10px;
   align-items: center;
   margin: 0;
   color: var(--ink-2);
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.05em;
+}
+
+.eyebrow-year {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.eyebrow-role {
+  padding-left: 10px;
+  border-left: 1px solid var(--line-strong);
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 .status-dot {
@@ -826,19 +860,36 @@ body.menu-open .global-nav {
 
 .title-sub {
   display: block;
-  margin-top: 20px;
+  margin-top: 16px;
   color: var(--muted);
-  font-size: clamp(1.3rem, 2.1vw, 1.8rem);
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .hero-lede {
   max-width: 34em;
-  margin: 26px 0 0;
+  margin: 24px 0 0;
   color: var(--muted);
-  font-size: clamp(1rem, 1.15vw, 1.08rem);
-  line-height: 1.85;
+  font-size: clamp(0.98rem, 1.1vw, 1.05rem);
+  line-height: 1.8;
+}
+
+.hero-lede strong {
+  color: var(--ink);
+  font-weight: 600;
+  background: linear-gradient(transparent 68%, var(--accent-soft) 68%);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.hero-note {
+  display: block;
+  margin-top: 8px;
+  color: var(--faint);
+  font-size: 12.5px;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
 }
 
 .hero-actions {
@@ -1037,6 +1088,21 @@ body.menu-open .global-nav {
   border-top: 1px solid var(--on-dark-line);
   color: var(--on-dark-muted);
   font-size: clamp(0.98rem, 1.2vw, 1.05rem);
+  line-height: 1.8;
+}
+
+.statement-copy strong {
+  display: block;
+  color: var(--on-dark);
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.statement-copy span {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
   line-height: 1.8;
 }
 
@@ -1554,6 +1620,21 @@ body.menu-open .global-nav {
   margin: 20px 0 0;
   color: var(--on-dark-muted);
   font-size: 14.5px;
+  line-height: 1.8;
+}
+
+.engineering-copy > p:last-child strong {
+  display: block;
+  color: var(--on-dark);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.engineering-copy > p:last-child span {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
   line-height: 1.8;
 }
 
@@ -2368,8 +2449,8 @@ body.viewer-open {
   }
 
   .title-sub {
-    margin-top: 16px;
-    font-size: 1.3rem;
+    margin-top: 14px;
+    font-size: 1.1rem;
   }
 
   .hero-lede {
